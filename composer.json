@@ -1,0 +1,39 @@
+{
+  "name": "inven10/phector",
+  "description": "Lightweight and non-intrusive data mapper for PHP",
+  "type": "package",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "James Asbury",
+      "email": "james@invento.io"
+    },
+    {
+      "name": "Francis Murillo",
+      "email": "francis@invento.io"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Phector\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phector\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0",
+    "danielstjules/stringy": "^3.1.0",
+    "illuminate/database": "^5.7"
+  },
+  "require-dev": {
+    "fzaninotto/Faker": "^1.8.0",
+    "squizlabs/php_codesniffer": "^3.0.0",
+    "phpunit/phpunit": "^7.0.0",
+    "spruct/spruct": "~1.0.0",
+    "phpunit/dbunit": "^4.0.0"
+  }
+}

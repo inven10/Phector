@@ -1,0 +1,12 @@
+language: php
+php:
+  - '7.1'
+install:
+  - composer install --prefer-dist
+services:
+  - postgresql
+cache:
+  directories:
+    - vendor
+before_script:
+  - psql -c 'create database phector_test;' -U postgres
