@@ -9,7 +9,7 @@ Inspired by Elixir Ecto
 # Roadmap to v0.1.0
 
 - [ ] Core
-  - [ ] Select
+  - [x] Select
   - [ ] Insert
   - [ ] Update
   - [ ] Delete
