@@ -1,0 +1,65 @@
+{
+  "name": "phector",
+  "version": "1.0.0",
+  "description": "Lightweight and non-intrusive data mapper for php",
+  "main": "index.js",
+  "scripts": {
+    "jsonlint": "jsonlint",
+    "lint-staged": "lint-staged",
+    "test": "composer dump-autoload && ./vendor/bin/phpunit",
+    "yaml-validator": "yaml-validator"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inven10/Phector.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inven10/Phector/issues"
+  },
+  "homepage": "https://github.com/inven10/Phector#readme",
+  "devDependencies": {
+    "jsonlint": "^1.6.3",
+    "lint-staged": "^7.0.5",
+    "pre-git": "^3.17.1",
+    "yaml-validator": "^1.3.0"
+  },
+  "config": {
+    "pre-git": {
+      "enabled": true,
+      "allow-untracked-files": true,
+      "pre-commit": [
+        "composer dump-autoload",
+        "./vendor/bin/phpcbf src tests --runtime-set ignore_warnings_on_exit 1",
+        "npm run lint-staged"
+      ],
+      "post-commit": [],
+      "pre-push": [
+        "npm run test"
+      ],
+      "post-checkout": [],
+      "post-merge": [
+        "composer update --prefer-dist"
+      ]
+    }
+  },
+  "release": {
+    "analyzeCommits": "simple-commit-message"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.php": [
+        "php -l",
+        "git add"
+      ],
+      "*.json": [
+        "jsonlint -i",
+        "git add"
+      ],
+      "*.yml": [
+        "git add"
+      ]
+    }
+  }
+}
