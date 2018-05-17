@@ -1,4 +1,6 @@
-# Phector [![Build Status](https://travis-ci.com/inven10/Phector.svg?branch=master)](https://travis-ci.com/inven10/Phector)
+# Phector
+[![Build Status](https://travis-ci.com/inven10/Phector.svg?branch=master)](https://travis-ci.com/inven10/Phector) [![Coverage Status](https://coveralls.io/repos/github/inven10/Phector/badge.svg?branch=master)](https://coveralls.io/github/inven10/Phector?branch=master)
+
 Lightweight and non-intrusive data mapper for php
 
 Inspired by Elixir Ecto
