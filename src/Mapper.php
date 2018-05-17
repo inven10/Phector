@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Phector;
 
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 
 use Phector\Schema;
 use Phector\RepoConfig;
@@ -63,47 +64,34 @@ final class Mapper
 
     function __call(string $name, array $args)
     {
-        $endMethods = ['find', 'first', 'get'];
+		$result = call_user_func_array([$this->query->cloneWithout([]), $name], $args);
 
-        if(in_array($name, $endMethods)) {
-            return call_user_func_array($this->{$name}, $args);
-        } else {
-            $result = call_user_func_array([$this->query, $name], $args);
+		if ($result instanceof QueryBuilder) {
+			return new self(
+				$this->entityClass,
+				$result,
+				$this->schema
+			);
+		} elseif (is_array($result)) {
+			return array_map(
+				function ($record) {
+					return $this->build(get_object_vars($record));
+				},
+				$result
+			);
+		} elseif ($result instanceof \stdClass){
+			return $this->build(get_object_vars($result));
+		} elseif ($result instanceof Collection){
+			return array_map(
+				function ($record) {
+					return $this->build(get_object_vars($record));
+				},
+				$result->toArray()
+			);
+		}  else {
+			return $result;
+		}
 
-            if($result instanceof QueryBuilder) {
-                return new self(
-                    $this->entityClass,
-                    $result,
-                    $this->schema
-                );
-            } else {
-                return $result;
-            }
-        }
-    }
-
-    public function get()
-    {
-        return array_map(
-            function ($record) {
-                return $this->build(get_object_vars($record));
-            },
-            $this->query->get()->all()
-        );
-    }
-
-    public function find($id, $columns = ['*'])
-    {
-        $result = $this->query->find($id, $columns);
-
-        return $result ? $this->build(get_object_vars($result)) : null;
-    }
-
-    public function first()
-    {
-        $result = $this->query->first();
-
-        return $result ? $this->build(get_object_vars($result)) : null;
     }
 
     /**
