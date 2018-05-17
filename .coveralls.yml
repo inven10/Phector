@@ -1,3 +1,2 @@
 coverage_clover: .coverage-ci/clover.xml
 json_path: .coverage-ci/coveralls-upload.json
-service_name: travis-ci
