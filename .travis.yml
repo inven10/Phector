@@ -11,4 +11,4 @@ cache:
 before_script:
   - psql -c 'create database phector_test;' -U postgres
 after_success:
-  - travis_retry php vendor/bin/php-coveralls
+  - travis_retry php vendor/bin/php-coveralls -v

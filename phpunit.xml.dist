@@ -20,6 +20,7 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="coverage-clover" target=".coverage-ci/clover.xml"/>
+        <log type="coverage-html" target=".coverage"/>
     </logging>
 </phpunit>
