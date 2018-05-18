@@ -72,6 +72,10 @@ final class CoreTest extends \PHPUnit\Framework\TestCase
             $this->assertArraySubset(array_keys($record), $fieldNames);
             $this->assertNotContains(null, array_values($record));
         }
+
+        $repeatEntities = $mapper->get();
+
+        $this->assertNotEmpty($repeatEntities);
     }
 
     /**
@@ -103,9 +107,7 @@ final class CoreTest extends \PHPUnit\Framework\TestCase
         $mapper = self::$repo->entityMapper(CoreEntity::class);
 
         foreach ($entities as $entity) {
-            // TODO: UUID find does not work
-            // $this->assertNotEmpty($mapper->find($entity->id));
-            $this->markTestIncomplete("UUID find needs to work");
+             $this->assertNotEmpty($mapper->find($entity->id));
         }
     }
 }
