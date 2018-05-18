@@ -3,7 +3,7 @@
   "description": "Lightweight and non-intrusive data mapper for PHP",
   "type": "package",
   "license": "GPLv3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     {
       "name": "James Asbury",
