@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 
 use Phector\Schema;
 use Phector\RepoConfig;
+use Phector\RecordNotFoundException;
 
 /**
  * Actual class that maps the data into the entity.
@@ -64,33 +65,33 @@ final class Mapper
 
     function __call(string $name, array $args)
     {
-		$result = call_user_func_array([$this->query->cloneWithout([]), $name], $args);
+        $result = call_user_func_array([$this->cloneQuery(), $name], $args);
 
-		if ($result instanceof QueryBuilder) {
-			return new self(
-				$this->entityClass,
-				$result,
-				$this->schema
-			);
-		} elseif (is_array($result)) {
-			return array_map(
-				function ($record) {
-					return $this->build(get_object_vars($record));
-				},
-				$result
-			);
-		} elseif ($result instanceof \stdClass){
-			return $this->build(get_object_vars($result));
-		} elseif ($result instanceof Collection){
-			return array_map(
-				function ($record) {
-					return $this->build(get_object_vars($record));
-				},
-				$result->toArray()
-			);
-		}  else {
-			return $result;
-		}
+        if ($result instanceof QueryBuilder) {
+            return new self(
+                $this->entityClass,
+                $result,
+                $this->schema
+            );
+        } elseif (is_array($result)) {
+            return array_map(
+                function ($record) {
+                    return $this->build(get_object_vars($record));
+                },
+                $result
+            );
+        } elseif ($result instanceof \stdClass) {
+            return $this->build(get_object_vars($result));
+        } elseif ($result instanceof Collection) {
+            return array_map(
+                function ($record) {
+                    return $this->build(get_object_vars($record));
+                },
+                $result->toArray()
+            );
+        }  else {
+            return $result;
+        }
 
     }
 
@@ -176,5 +177,55 @@ final class Mapper
         $this->query->insert($data);
 
         return $this->build($data);
+    }
+
+    /**
+     * Update an entity
+     *
+     * @throws RecordNotFoundException If no record was found
+     * @param  object The entity with updated fields
+     * @return object A new instance of the updated entity.
+     */
+    public function update($entity)
+    {
+        return $this->updateRecord($this->entityClass::toRecord($entity, []));
+    }
+
+    /**
+     * Update an entity record
+     *
+     * @throws RecordNotFoundException If no record was found
+     * @param  array The entity record with updated fields
+     * @return object A new instance of the updated entity.
+     */
+    public function updateRecord(array $entityRecord)
+    {
+        $primaryField = $this->schema->getPrimaryField();
+        $fieldName = $primaryField->getFieldName();
+        $columnName = $primaryField->getColumnName();
+
+        $record = $this->cloneQuery()->first();
+        if(!$record) {
+            throw new RecordNotFoundException();
+        }
+
+        $this->cloneQuery()->where($columnName, $entityRecord[$fieldName])->update($entityRecord);
+
+        return $this->build(
+            get_object_vars(
+                $this->cloneQuery()->where($columnName, $entityRecord[$fieldName])->first()
+            )
+        );
+
+    }
+    
+    /**
+     * Clones the query property of the mapper
+     *
+     * @return object The cloned query object.
+     */
+    private function cloneQuery()
+    {
+        return $this->query->cloneWithout([]);
     }
 }

@@ -13,7 +13,7 @@ Inspired by Elixir Ecto
 - [ ] Core
   - [x] Select
   - [x] Insert
-  - [ ] Update
+  - [x] Update
   - [ ] Delete
 - [ ] Join
 - [ ] Better Types
