@@ -218,6 +218,29 @@ final class Mapper
         );
 
     }
+
+    /**
+     * Delete the given entity
+     *
+     * @throws RecordNotFoundException If no record was found
+     * @param  object The entity to delete
+     * @return object A new instance of the updated entity.
+     */
+    public function delete($entity)
+    {
+        $primaryField = $this->schema->getPrimaryField();
+        $fieldName = $primaryField->getFieldName();
+        $columnName = $primaryField->getColumnName();
+
+        $record = $this->cloneQuery()->first();
+        if(!$record) {
+            throw new RecordNotFoundException();
+        }
+
+        $this->cloneQuery()->where($columnName, $entity->{$fieldName})->delete();
+
+        return $entity;
+    }
     
     /**
      * Clones the query property of the mapper

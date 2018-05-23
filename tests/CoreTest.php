@@ -164,4 +164,38 @@ final class CoreTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($secondEntity->id, $secondUpdatedEntity->id);
         $this->assertNotEquals($secondEntity->code, $secondUpdatedEntity->code);
     }
+
+    /**
+     * Proof that delete works.
+     *
+     * @group core
+     * @group positive
+     * @test
+     */
+    public function deleteShouldWork()
+    {
+        $populator = new Populator(
+            Factory::create(),
+            self::$repo
+        );
+
+        $populator->addEntity(CoreEntity::class, 3);
+        $insertedEntities = $populator->execute();
+
+        $entities = [];
+        foreach ($insertedEntities as $insertedEntities) {
+            foreach ($insertedEntities as $entity) {
+                $entities[] = $entity;
+            }
+        }
+
+        $mapper = self::$repo->entityMapper(CoreEntity::class);
+
+        foreach($entities as $entity)
+        {
+            $deletedEntity = $mapper->delete($entity);
+            $this->assertEquals($deletedEntity->id, $entity->id);
+            $this->assertEmpty($mapper->find($entity->id));
+        }
+    }
 }
