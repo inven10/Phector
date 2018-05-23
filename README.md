@@ -16,6 +16,8 @@ Inspired by Elixir Ecto
   - [x] Update
   - [x] Delete
 - [ ] Join
+  - [ ] Simple
+  - [ ] Nested
 - [ ] Better Types
 - [ ] Transaction
 - [ ] Complex Query Tests
