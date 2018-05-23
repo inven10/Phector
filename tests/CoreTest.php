@@ -110,4 +110,58 @@ final class CoreTest extends \PHPUnit\Framework\TestCase
              $this->assertNotEmpty($mapper->find($entity->id));
         }
     }
+
+    /**
+     * Proof that update works.
+     *
+     * @group core
+     * @group positive
+     * @test
+     */
+    public function updateShouldWork()
+    {
+        $populator = new Populator(
+            Factory::create(),
+            self::$repo
+        );
+
+        $populator->addEntity(CoreEntity::class, 2);
+        $insertedEntities = $populator->execute();
+
+        $entities = [];
+        foreach ($insertedEntities as $insertedEntities) {
+            foreach ($insertedEntities as $entity) {
+                $entities[] = $entity;
+            }
+        }
+
+        $mapper = self::$repo->entityMapper(CoreEntity::class);
+
+        $firstEntity = $entities[0];
+        $secondEntity = $entities[1];
+
+        $secondEntityRecord = CoreEntity::toRecord($secondEntity);
+
+        $firstPreUpdatedEntity = CoreEntity::merge(
+            $firstEntity,
+            $secondEntityRecord
+        );
+        $firstPreUpdatedEntity->id = $firstEntity->id;
+        $firstUpdatedEntity = $mapper->update($firstPreUpdatedEntity);
+
+        $this->assertEquals($firstEntity->id, $firstUpdatedEntity->id);
+        $this->assertNotEquals($firstEntity->code, $firstUpdatedEntity->code);
+
+        $firstEntityRecord = CoreEntity::toRecord($firstEntity);
+
+        $secondPreUpdatedEntity = CoreEntity::merge(
+            $secondEntity,
+            $firstEntityRecord
+        );
+        $secondPreUpdatedEntity->id = $secondEntity->id;
+        $secondUpdatedEntity= $mapper->update($secondPreUpdatedEntity);
+
+        $this->assertEquals($secondEntity->id, $secondUpdatedEntity->id);
+        $this->assertNotEquals($secondEntity->code, $secondUpdatedEntity->code);
+    }
 }

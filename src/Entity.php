@@ -54,4 +54,32 @@ trait Entity
     {
         return get_object_vars($instance);
     }
+
+    /**
+     * Clone the given instance
+     *
+     * @return self Cloned instance of the class.
+     */
+    public static function clone($instance)
+    {
+        return self::fromRecord(self::createInstance(), self::toRecord($instance));
+    }
+
+    /**
+     * Merges an instance with array.
+     *
+     * @param  self  $instance An instance of this class.
+     * @param  array $data     Data to be merged into the instance.
+     * @return self A new instance with the data merged into it
+     */
+    public static function merge($instance, array $data)
+    {
+        $clonedInstance = self::clone($instance);
+        foreach($data as $key => $value){
+            $clonedInstance->{$key} = $value;
+        }
+
+        return $clonedInstance;
+    }
+
 }

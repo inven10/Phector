@@ -56,6 +56,22 @@ final class Schema
         );
     }
 
+    /**
+     * Support getter for the primary field.
+     *
+     * @return Field The primary field for the schema.
+     */
+    public function getPrimaryField() : Field
+    {
+        foreach($this->fields as $key => $field)
+        {
+            if($field->isPrimary()) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Validate and create a schema object
