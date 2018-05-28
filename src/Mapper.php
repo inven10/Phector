@@ -141,7 +141,7 @@ final class Mapper
      */
     public function insert($entity)
     {
-        return $this->insertRecord($entity->toRecord());
+        return $this->insertRecord($this->entityClass::toRecord($entity));
     }
 
     /**
@@ -241,7 +241,7 @@ final class Mapper
 
         return $entity;
     }
-    
+
     /**
      * Clones the query property of the mapper
      *

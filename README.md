@@ -19,7 +19,7 @@ Inspired by Elixir Ecto
   - [ ] Simple
   - [ ] Nested
 - [ ] Better Types
-- [ ] Transaction
+- [x] Transaction
 - [ ] Complex Query Tests
 - [ ] Faker Integration
 - [ ] Project Guide

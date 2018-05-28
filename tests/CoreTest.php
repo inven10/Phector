@@ -21,7 +21,7 @@ final class CoreTest extends \PHPUnit\Framework\TestCase
         self::$repo = DB::repo();
 
         $tableName = Schema::create(CoreEntity::getSchema())->getTable();
-        $builder = DB::schemaBuilder();
+        $builder = self::$repo->schemaBuilder();
 
         if ($builder->hasTable($tableName)) {
             $builder->drop($tableName);

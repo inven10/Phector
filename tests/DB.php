@@ -20,9 +20,4 @@ final class DB
     {
         return Repo::create(self::$postgresConfig);
     }
-
-    public static function schemaBuilder()
-    {
-        return self::repo()->getManager()->schema();
-    }
 }
