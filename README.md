@@ -10,14 +10,16 @@ Inspired by Elixir Ecto
 
 # Roadmap to v0.1.0
 
-- [ ] Core
+- [x] Core
   - [x] Select
   - [x] Insert
   - [x] Update
-  - [ ] Delete
+  - [x] Delete
 - [ ] Join
+  - [ ] Simple
+  - [ ] Nested
 - [ ] Better Types
-- [ ] Transaction
+- [x] Transaction
 - [ ] Complex Query Tests
 - [ ] Faker Integration
 - [ ] Project Guide

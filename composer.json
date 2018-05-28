@@ -34,7 +34,7 @@
     "fzaninotto/Faker": "^1.8.0",
     "squizlabs/php_codesniffer": "^3.0.0",
     "phpunit/phpunit": "^7.0.0",
-      "php-coveralls/php-coveralls": "^2.0.0",
+    "php-coveralls/php-coveralls": "^2.0.0",
     "spruct/spruct": "~1.0.0",
     "phpunit/dbunit": "^4.0.0"
   }

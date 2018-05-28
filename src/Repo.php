@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace Phector;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use PDO;
+use Illuminate\Container\Container;
+use Illuminate\Support\Fluent;
+use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Database\Events\StatementPrepared;
 
 use Phector\RepoConfig;
 use Phector\Mapper;
-use Phector\PlainEntity;
-use Phector\MappedEntity;
+use Phector\TransactionalRepo;
 
 /**
  * The Data Mapper for PHP inspired by Ecto
@@ -17,39 +20,60 @@ use Phector\MappedEntity;
 final class Repo
 {
     private $config;
-    private $manager;
+    private $factory;
 
-    private function __construct($config, $manager)
+    private function __construct($config, $factory)
     {
         $this->config = $config;
-        $this->manager = $manager;
-    }
-
-    /**
-     * Get the underlying database manager.
-     *
-     * @return object Underlying manager instance for the repo.
-     */
-    public function getManager()
-    {
-        return $this->manager;
+        $this->factory = $factory;
     }
 
     /**
      * Create a repo.
      *
+     * Instead of using the normal capsule manager, this uses the
+     * ConnectionFactory to allow better transactional support.
+     *
      * @param  array $config A repo configuration.
-     * @return Repo A valid repo.
+     * @return self A valid repo.
      */
     public static function create(array $config)
     {
         $repoConfig = RepoConfig::create($config);
 
-        $manager = new Capsule();
-        $manager->addConnection($repoConfig->getDatabaseConfig());
-        $manager->setAsGlobal();
+        $container = new Container();
+        $factory = new ConnectionFactory(new Container());
 
-        return new self($repoConfig, $manager);
+        return new self($repoConfig, $factory);
+    }
+
+    private function makeConnection()
+    {
+        $connection = $this->factory->make($this->config->getDatabaseConfig());
+
+        $dispatcher = new Dispatcher(new Container());
+        $dispatcher->listen(
+            StatementPrepared::class, function ($event) {
+                // TODO: Should be configured to fully tweak the join feature
+                $event->statement->setFetchMode(PDO::FETCH_OBJ);
+            }
+        );
+
+        $connection->setEventDispatcher($dispatcher);
+
+        return $connection;
+    }
+
+    /**
+     * Create a schema builder.
+     *
+     * @internal If the query builder can be changed, this method should
+     * be refactored.
+     * @return   SchemaBuilder The Illuminate schema builder
+     */
+    public function schemaBuilder()
+    {
+        return $this->makeConnection()->getSchemaBuilder();
     }
 
     /**
@@ -78,6 +102,16 @@ final class Repo
      */
     public function mapper($entityClass, array $schema)
     {
-        return Mapper::create($this->manager->connection(), $entityClass, $schema);
+        return Mapper::create($this->makeConnection(), $entityClass, $schema);
+    }
+
+    /**
+     * Create a transactional repo.
+     *
+     * @return TransactionalRepo A repo with a transaction enabled.
+     */
+    public function transactional()
+    {
+        return TransactionalRepo::create($this->makeConnection());
     }
 }
