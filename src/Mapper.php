@@ -18,6 +18,7 @@ final class Mapper
     private $entityClass;
     private $query;
     private $schema;
+    private $associations = [];
 
     private function __construct($entityClass, $query, $schema)
     {
@@ -65,33 +66,41 @@ final class Mapper
 
     function __call(string $name, array $args)
     {
-        $result = call_user_func_array([$this->cloneQuery(), $name], $args);
+        $endMethods = ['preload'];
 
-        if ($result instanceof QueryBuilder) {
-            return new self(
-                $this->entityClass,
-                $result,
-                $this->schema
-            );
-        } elseif (is_array($result)) {
-            return array_map(
-                function ($record) {
-                    return $this->build(get_object_vars($record));
-                },
-                $result
-            );
-        } elseif ($result instanceof \stdClass) {
-            return $this->build(get_object_vars($result));
-        } elseif ($result instanceof Collection) {
-            return array_map(
-                function ($record) {
-                    return $this->build(get_object_vars($record));
-                },
-                $result->toArray()
-            );
-        }  else {
-            return $result;
+        if(in_array($name, $endMethods)) {
+            $this->{$name}(...$args);
+        } else {
+            $result = call_user_func_array([$this->cloneQuery(), $name], $args);
+
+            if ($result instanceof QueryBuilder) {
+                return new self(
+                    $this->entityClass,
+                    $result,
+                    $this->schema
+                );
+            } elseif (is_array($result)) {
+                return array_map(
+                    function ($record) {
+                        return $this->build(get_object_vars($record));
+                    },
+                    $result
+                );
+            } elseif ($result instanceof \stdClass) {
+                return $this->build($this->entityClass::toRecord($result));
+            } elseif ($result instanceof Collection) {
+                var_dump("cat", $result->toArray());
+                return array_map(
+                    function ($record) {
+                           return $this->build($this->entityClass::toRecord($record));
+                    },
+                    $result->toArray()
+                );
+            }  else {
+                return $result;
+            }
         }
+    
 
     }
 
@@ -212,7 +221,7 @@ final class Mapper
         $this->cloneQuery()->where($columnName, $entityRecord[$fieldName])->update($entityRecord);
 
         return $this->build(
-            get_object_vars(
+            $this->entityClass::toRecord(
                 $this->cloneQuery()->where($columnName, $entityRecord[$fieldName])->first()
             )
         );
@@ -241,6 +250,21 @@ final class Mapper
 
         return $entity;
     }
+
+    /**
+     * Preload an association
+     *
+     * @param  string|array The relationship/s to preload
+     * @return self A new instance of the updated entity.
+     */
+    public function preload($names, $aliases = [])
+    {
+        $this->associations[] = [
+        'names' => $names,
+        'aliases' => $aliases
+        ];
+    }
+
     
     /**
      * Clones the query property of the mapper

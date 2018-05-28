@@ -66,6 +66,16 @@ final class ColumnTypeGuesser
                 return function () use ($generator) {
                     return $generator->datetime;
                 };
+            case 'uuid':
+                return function () use ($generator) {
+                    $uuid = md5(uniqid());
+                    $uuid = substr_replace($uuid, '-', 8, 0);
+                    $uuid = substr_replace($uuid, '-', 13, 0);
+                    $uuid = substr_replace($uuid, '-', 18, 0);
+                    $uuid = substr_replace($uuid, '-', 23, 0);
+
+                    return $uuid;
+                };
             default:
                 // no smart way to guess what the user expects here
                 return null;
