@@ -51,7 +51,7 @@ final class ColumnTypeGuesser
             case 'string':
             case StringType::class:
                 // TODO: More consideration
-                $size = 255;
+                $size = 25;
 
                 return function () use ($generator, $size) {
                     return $generator->text($size);

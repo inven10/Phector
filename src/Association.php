@@ -12,20 +12,20 @@ final class Association
     private $name;
     private $type;
     private $entityClass;
-    private $primaryKey;
+    private $localKey;
     private $foreignKey;
 
     private function __construct(
         string $name,
         $type,
         string $entityClass,
-        $primaryKey,
+        $localKey,
         $foreignKey
     ) {
         $this->name= $name;
         $this->type = $type;
         $this->entityClass = $entityClass;
-        $this->primaryKey = $primaryKey;
+        $this->localKey = $localKey;
         $this->foreignKey = $foreignKey;
     }
 
@@ -60,13 +60,13 @@ final class Association
     }
 
     /**
-     * A getter for the association's primary key.
+     * A getter for the association's local key.
      *
-     * @return string The primary key of the association.
+     * @return string The local key of the association.
      */
-    public function getPrimaryKey()
+    public function getLocalKey()
     {
-        return $this->primaryKey;
+        return $this->localKey;
     }
 
     /**
@@ -92,7 +92,7 @@ final class Association
             $association['name'],
             $association['type'],
             $association['entityClass'],
-            $association['primaryKey'],
+            $association['localKey'],
             $association['foreignKey']
         );
     }

@@ -52,6 +52,24 @@ final class Schema
     }
 
     /**
+     * Support function to find an association by name
+     *
+     * @return Association|null
+     */
+    public function findAssociation($name)
+    {
+        $result = null;
+        foreach($this->associations as $association)
+        {
+            if($name === $association->getName()) {
+                $result = $association;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Support getter to for the field names.
      *
      * @return array Array of field names.
@@ -96,7 +114,6 @@ final class Schema
     {
         // TODO: Further process and refinement of schema
         $tableName = $schema['table'];
-        $associations = $schema['associations'] ?? [];
 
         $baseFields = $schema['fields'];
         $fields = [];
@@ -107,6 +124,16 @@ final class Schema
             );
 
             $fields[$fieldName] = Field::create($field);
+        }
+
+        $baseAssociations = $schema['associations'] ?? [];
+        $associations = [];
+        foreach($baseAssociations as $key => $value) {
+            $association = array_merge(
+                $value,
+                ['name' => $key]
+            );
+            $associations[$key] = Association::create($association);
         }
 
         return new self($tableName, $fields, $associations);

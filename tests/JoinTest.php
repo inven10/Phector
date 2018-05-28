@@ -23,10 +23,13 @@ final class JoinTest extends \PHPUnit\Framework\TestCase
 
         $parentTableName = Schema::create(ParentEntity::getSchema())->getTable();
         $childTableName = Schema::create(ChildEntity::getSchema())->getTable();
-        $builder = DB::schemaBuilder();
+        $builder = self::$repo->schemaBuilder();
 
-        if ($builder->hasTable($parentTableName) || $builder->hasTable($childTableName)) {
+        if ($builder->hasTable($parentTableName)) {
             $builder->drop($parentTableName);
+        }
+
+        if($builder->hasTable($childTableName)) {
             $builder->drop($childTableName);
         }
 
@@ -66,34 +69,53 @@ final class JoinTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Proof that getting started works.
-     *
-     * However, the database fixture requires that build and insert
-     * already work so this test may be slightly redundant.
+     * Proof that the parent child join (or the many association) works
      *
      * @group core
      * @group positive
      * @test
      */
-    public function mapperShouldWork()
+    public function oneToManyShouldWork()
     {
         $mapper = self::$repo->entityMapper(ParentEntity::class);
 
-        $aliases = [
-        'child_entities' => [
-        'id' => 'child_id',
-        'name' => 'child_name',
-        'code' => 'child_code',
-        'parent_id'
-        ],
-        'parent_entities' => [
+        $parentEntities= $mapper->preload('children')->join('child_entities', 'child_entities.parent_id', '=', 'parent_entities.id')->get();
 
-        ]
-        ];
+        foreach($parentEntities as $parentEntity) {
+            $this->assertInstanceOf(ParentEntity::class, $parentEntity);
 
-        $entities = $mapper->join('child_entities', 'parent_entities.id', '=', 'child_entities.parent_id')->select(['*'])->get();
-        //$entities = $mapper->get();
-        //var_dump($entities);
+            $this->assertTrue(is_array($parentEntity->children));
+            foreach($parentEntity->children as $childEntity) {
+                $this->assertInstanceOf(ChildEntity::class, $childEntity);
+                $this->assertEquals($parentEntity->id, $childEntity->parentId);
+            }
+        }
+    }
+
+    /**
+     * Proof that the child parent join (or the one association) works
+     *
+     * @group core
+     * @group positive
+     * @test
+     */
+    public function hasOneShouldWork()
+    {
+        $mapper = self::$repo->entityMapper(ChildEntity::class)->preload('parentEntity')->join('parent_entities', 'parent_entities.id', '=', 'child_entities.parent_id');
+
+        $childEntities = $mapper->get();
+
+        foreach($childEntities as $childEntity) {
+            $this->assertInstanceOf(ChildEntity::class, $childEntity);
+            $this->assertInstanceOf(ParentEntity::class, $childEntity->parentEntity);
+            $this->assertTrue($childEntity->parentEntity->id === $childEntity->parentId);
+        }
+
+        $childEntity = $mapper->first();
+
+        $this->assertInstanceOf(ChildEntity::class, $childEntity);
+        $this->assertInstanceOf(ParentEntity::class, $childEntity->parentEntity);
+        $this->assertTrue($childEntity->parentEntity->id === $childEntity->parentId);
 
     }
 }

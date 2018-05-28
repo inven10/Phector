@@ -8,7 +8,7 @@ final class DB
 {
     public static $postgresConfig = [
         'driver' => 'pgsql',
-        'username' => 'macdonalds',
+        'username' => 'postgres',
         'password' => '',
         'database' => 'phector_test',
         'host' => 'localhost',
@@ -19,10 +19,5 @@ final class DB
     public static function repo() : Repo
     {
         return Repo::create(self::$postgresConfig);
-    }
-
-    public static function schemaBuilder()
-    {
-        return self::repo()->getManager()->schema();
     }
 }

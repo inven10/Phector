@@ -19,6 +19,7 @@ final class ChildEntity extends \Spruct\Struct implements MappedEntity
     protected $name;
     protected $code;
     protected $parentId;
+    protected $parentEntity;
 
     public static function getSchema() : array
     {
@@ -48,12 +49,12 @@ final class ChildEntity extends \Spruct\Struct implements MappedEntity
                 'type' => StringType::class 
                 ]
             ],
-            'relationships' => [
+            'associations' => [
                 'parentEntity' => [
                     'type' => AssociationTypes::One(),
-                    'entity' => ParentEntity::class,
-                    'foreignKey' => 'parent_id',
-                    'primaryKey' => 'id'
+                    'entityClass' => ParentEntity::class,
+                    'foreignKey' => 'id',
+                    'localKey' => 'parent_id'
                 ] 
             ]
         ];

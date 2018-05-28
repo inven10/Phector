@@ -16,10 +16,10 @@ Inspired by Elixir Ecto
   - [x] Update
   - [x] Delete
 - [ ] Join
-  - [ ] Simple
+  - [x] Simple
   - [ ] Nested
 - [ ] Better Types
-- [ ] Transaction
+- [x] Transaction
 - [ ] Complex Query Tests
 - [ ] Faker Integration
 - [ ] Project Guide

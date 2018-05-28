@@ -6,24 +6,19 @@ namespace Phector\Tests\Struct;
 use Phector\Entity;
 use Phector\MappedEntity;
 use Phector\Types\StringType;
-use Phector\AssociationTypes;
-use Phector\Types\DateType;
-use Phector\Types\JsonType;
-use Phector\Tests\Struct\ChildEntity;
 
-final class ParentEntity extends \Spruct\Struct implements MappedEntity
+final class LeftEntity extends \Spruct\Struct implements MappedEntity
 {
     use Entity;
 
     protected $id;
-    protected $parentName;
-    protected $parentCode;
-    protected $children;
+    protected $title;
+    protected $author;
 
     public static function getSchema() : array
     {
         return [
-            'table' => 'parent_entities',
+            'table' => 'left_entities',
             'fields' => [
                 'id' => [
                     'type' => StringType::class,
@@ -37,20 +32,12 @@ final class ParentEntity extends \Spruct\Struct implements MappedEntity
 
                         return $uuid;
                     }],
-                'parentName' => [
+                'title' => [
                     'type' => StringType::class
                 ],
-                'parentCode' => [
+                'author' => [
                     'type' => StringType::class
                 ]
-            ],
-            'associations' => [
-                'children' => [
-                    'type' => AssociationTypes::Many(),
-                    'entityClass' => ChildEntity::class,
-                    'foreignKey' => 'parent_id',
-            'localKey' => 'id'
-                ] 
             ]
         ];
     }
