@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3590835f892ab726758c7431d3f9bcab",
+    "content-hash": "828d5390fcb4a2c88c0277067557773a",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -2622,12 +2622,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "25088d9c91a37b2306f12ee4dca5b929f5d80af5"
+                "reference": "87ba8779e7335a491f14917d1604e81dfe3a2890"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/25088d9c91a37b2306f12ee4dca5b929f5d80af5",
-                "reference": "25088d9c91a37b2306f12ee4dca5b929f5d80af5",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/87ba8779e7335a491f14917d1604e81dfe3a2890",
+                "reference": "87ba8779e7335a491f14917d1604e81dfe3a2890",
                 "shasum": ""
             },
             "require": {
@@ -2665,7 +2665,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-06-01T05:50:09+00:00"
+            "time": "2018-06-07T06:03:43+00:00"
         },
         {
             "name": "symfony/config",

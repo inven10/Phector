@@ -5,7 +5,7 @@ namespace Phector\Tests\Struct;
 
 use Phector\Entity;
 use Phector\MappedEntity;
-use Phector\AssociationTypes;
+use Phector\Association\AssociationTypes;
 use Phector\Types\StringType;
 use Phector\Types\DateType;
 use Phector\Types\JsonType;
@@ -46,7 +46,7 @@ final class ChildEntity extends \Spruct\Struct implements MappedEntity
                 ],
                 'parentId' => [
                 'columnName' => 'parent_id',
-                'type' => StringType::class 
+                'type' => StringType::class
                 ]
             ],
             'associations' => [
@@ -55,7 +55,7 @@ final class ChildEntity extends \Spruct\Struct implements MappedEntity
                     'entityClass' => ParentEntity::class,
                     'foreignKey' => 'id',
                     'localKey' => 'parent_id'
-                ] 
+                ]
             ]
         ];
     }

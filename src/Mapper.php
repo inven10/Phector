@@ -7,12 +7,12 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
 
 use Phector\Schema;
-use Phector\RepoConfig;
+use Phector\Repo\RepoConfig;
 use Phector\Preload;
-use Phector\AssociationEntitiesPair;
-use Phector\AssociationTypes;
-use Phector\RecordNotFoundException;
-use Phector\AssociationNotFoundException;
+use Phector\Association\AssociationEntitiesPair;
+use Phector\Association\AssociationTypes;
+use Phector\Exception\RecordNotFoundException;
+use Phector\Exception\AssociationNotFoundException;
 
 /**
  * Actual class that maps the data into the entity.
@@ -182,7 +182,8 @@ final class Mapper
                         $associationSchema->getFields(),
                         empty($preload->getTableAlias()) ?
                             $associationSchema->getTable()
-                            : $preload->getTableAlias())
+                        : $preload->getTableAlias()
+                    )
                 );
             }
         }
@@ -377,15 +378,15 @@ final class Mapper
      */
     private function processPreloads(array $recordSet, array $preloads, $baseSchema)
     {
-        $unwrap = function($arr) {
+        $unwrap = function ($arr) {
             return $arr[0];
         };
 
-        $getSchemaAlias = function($tableName, $columnName) {
+        $getSchemaAlias = function ($tableName, $columnName) {
             return $this->generateAlias($tableName, $columnName, true);
         };
 
-        $buildEntityFrom = function($record, $schema, $extraBuildParams = []) use($getSchemaAlias) {
+        $buildEntityFrom = function ($record, $schema, $extraBuildParams = []) use ($getSchemaAlias) {
             $tableName = $schema->getTable();
             $baseRecord = [];
             foreach($schema->getFields() as $field) {
@@ -405,7 +406,7 @@ final class Mapper
         $entityClassCollection = $recordCollection
             ->unique($this->generateAlias($baseSchema->getTable(), $baseSchema->getPrimaryField()->getColumnName(), true))
             ->map(
-            function($record) use($buildEntityFrom){
+                function ($record) use ($buildEntityFrom) {
                     return $buildEntityFrom($record, $this->schema);
                 }
             );
@@ -423,7 +424,7 @@ final class Mapper
                 $associations = $recordCollection
                     ->unique($primaryAlias)
                     ->map(
-                        function($record)  use (
+                        function ($record) use (
                             $buildEntityFrom,
                             $schema,
                             $association
@@ -438,7 +439,7 @@ final class Mapper
                 return [
                     $association->getName() => AssociationEntitiesPair::create($association, $associations->toArray())
                 ];
-            };
+        };
 
         $associationEntitiesPairCollection = Collection::make($this->preloads)
             ->mapToGroups($buildPairs)
@@ -491,7 +492,7 @@ final class Mapper
                 $baseEntityId = $baseEntity->{$baseSchema->getPrimaryField()->getFieldName()};
 
                 $filteredAssociationIds = $associationEntitiesPairCollection->map(
-                    function($pair, $associationName) use(
+                    function ($pair, $associationName) use (
                         $filterAssociationEntityPairs,
                         $baseEntity,
                         $baseSchema
@@ -509,10 +510,10 @@ final class Mapper
             $clonedEntity = get_class($originalEntity)::clone($originalEntity);
 
             foreach($associations as $associationName => $associationIds) {
-               $associationIdCollection = Collection::make($associationIds);
-               $association = $associationMap[$associationName];
-               $associationSchema = Schema::create($association->getEntityClass()::getSchema());
-               $associationEntities = $associationEntityMap[$associationName];
+                $associationIdCollection = Collection::make($associationIds);
+                $association = $associationMap[$associationName];
+                $associationSchema = Schema::create($association->getEntityClass()::getSchema());
+                $associationEntities = $associationEntityMap[$associationName];
 
                 $kittens = $associationIdCollection->map(
                     function ($id) use ($associationEntities, $associationSchema) {
@@ -526,16 +527,16 @@ final class Mapper
                     }
                 );
 
-               switch($association->getType()){
-                   case AssociationTypes::one() :
+                switch($association->getType()){
+                case AssociationTypes::one() :
                     $clonedEntity->{$associationName} = $kittens->first() ?? null;
                     break;
-                   case AssociationTypes::many() :
+                case AssociationTypes::many() :
                     $clonedEntity->{$associationName} = $kittens->toArray() ?? [];
                     break;
-                   default:
+                default:
                     break;
-               }
+                }
             }
 
             return $clonedEntity;
@@ -547,7 +548,7 @@ final class Mapper
                 $associationEntitiesPairCollection,
                 $baseSchema,
                 $buildAssociationsOnEntity
-            ){
+            ) {
                 $baseEntityIndex = $entityClassCollection->search(
                     function ($entity) use ($baseEntityPrimaryKey, $baseSchema) {
                         return $entity->{$baseSchema->getPrimaryField()->getFieldName()} === $baseEntityPrimaryKey;

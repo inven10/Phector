@@ -8,9 +8,9 @@ use Illuminate\Container\Container;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
-use Phector\RepoConfig;
+use Phector\Repo\RepoConfig;
 use Phector\Mapper;
-use Phector\TransactionalRepo;
+use Phector\Repo\TransactionalRepo;
 
 /**
  * The Data Mapper for PHP inspired by Ecto
