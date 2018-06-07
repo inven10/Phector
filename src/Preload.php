@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Phector;
 
 use Phector\Association;
+use Phector\Exceptions\AssociationNotFoundException;
 
 /**
  * A class representing a preload
@@ -45,18 +46,18 @@ final class Preload
     /**
      * Validates and creates a preload
      *
-     * @param  Schema $schema Valid schema object of the base entity
+     * @param  Schema $schema     Valid schema object of the base entity
      * @param  string $identifier Identifier or name for the association/s
      * @return Preload The preload object
      */
     public static function create($schema, $identifier, $tableAlias = '') : Preload
     {
-		$association = $schema->findAssociation($identifier);
+        $association = $schema->findAssociation($identifier);
 
-		if(!$association) {
-			throw new AssociationNotFoundException();
-		}
+        if(!$association) {
+            throw new AssociationNotFoundException();
+        }
 
-		return new self($association, $tableAlias);
-	}
+        return new self($association, $tableAlias);
+    }
 }

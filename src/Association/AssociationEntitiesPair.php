@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Phector;
+namespace Phector\Association;
 
 use Phector\Association;
 
 /**
- * A class representing an association-entity pairs 
+ * A class representing an association-entity pairs
  */
 final class AssociationEntitiesPair
 {

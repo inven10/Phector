@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Phector;
+namespace Phector\Repo;
 
-use Phector\InvalidConfigException;
+use Phector\Exceptions\InvalidConfigException;
 
 /**
  * A configuration class for the repo object

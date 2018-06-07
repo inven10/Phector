@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Phector;
+namespace Phector\Association;
 
 use vijinho\Enums\Enum;
 
