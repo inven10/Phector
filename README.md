@@ -16,7 +16,7 @@ Inspired by Elixir Ecto
   - [x] Update
   - [x] Delete
 - [ ] Join
-  - [ ] Simple
+  - [x] Simple
   - [ ] Nested
 - [ ] Better Types
 - [x] Transaction

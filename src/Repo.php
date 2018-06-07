@@ -7,8 +7,6 @@ use PDO;
 use Illuminate\Container\Container;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Connectors\ConnectionFactory;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Database\Events\StatementPrepared;
 
 use Phector\RepoConfig;
 use Phector\Mapper;
@@ -50,16 +48,6 @@ final class Repo
     private function makeConnection()
     {
         $connection = $this->factory->make($this->config->getDatabaseConfig());
-
-        $dispatcher = new Dispatcher(new Container());
-        $dispatcher->listen(
-            StatementPrepared::class, function ($event) {
-                // TODO: Should be configured to fully tweak the join feature
-                $event->statement->setFetchMode(PDO::FETCH_OBJ);
-            }
-        );
-
-        $connection->setEventDispatcher($dispatcher);
 
         return $connection;
     }

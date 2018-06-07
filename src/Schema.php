@@ -12,11 +12,13 @@ final class Schema
 {
     private $table;
     private $fields;
+    private $associations;
 
-    public function __construct(string $table, array $fields)
+    public function __construct(string $table, array $fields, $associations = [])
     {
         $this->table = $table;
         $this->fields = $fields;
+        $this->associations = $associations;
     }
 
     /**
@@ -37,6 +39,34 @@ final class Schema
     public function getFields() : array
     {
         return $this->fields;
+    }
+
+    /**
+     * Getter for associations.
+     *
+     * @return array Array of association objects.
+     */
+    public function getAssociations() : array
+    {
+        return $this->associations;
+    }
+
+    /**
+     * Support function to find an association by name
+     *
+     * @return Association|null
+     */
+    public function findAssociation($name)
+    {
+        $result = null;
+        foreach($this->associations as $association)
+        {
+            if($name === $association->getName()) {
+                $result = $association;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -96,7 +126,17 @@ final class Schema
             $fields[$fieldName] = Field::create($field);
         }
 
-        return new self($tableName, $fields);
+        $baseAssociations = $schema['associations'] ?? [];
+        $associations = [];
+        foreach($baseAssociations as $key => $value) {
+            $association = array_merge(
+                $value,
+                ['name' => $key]
+            );
+            $associations[$key] = Association::create($association);
+        }
+
+        return new self($tableName, $fields, $associations);
     }
 
 }
