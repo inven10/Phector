@@ -5,14 +5,15 @@ namespace Phector\Types;
 
 use Phector\Types\TypeInterface;
 
-final class StringType implements TypeInterface
+final class BooleanType implements TypeInterface
 {
     public static function load($field)
     {
-        return $field;
+        return (bool) $field;
     }
+
     public static function dump($field)
     {
-        return $field;
+        return (bool) $field ? 1 : 0;
     }
 }

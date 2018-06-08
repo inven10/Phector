@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace Phector;
 
 use PDO;
+use Phector\Mapper;
+
 use Illuminate\Container\Container;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
 use Phector\Repo\RepoConfig;
-use Phector\Mapper;
 use Phector\Repo\TransactionalRepo;
 
 /**
@@ -106,10 +107,22 @@ final class Repo
     /**
      * Get the types from the repo config.
      *
-     * @return array Array.
+     * @return array Array of types.
      */
     public function getTypes()
     {
+        return $this->config->getTypes();
+    }
+
+    /**
+     * Adds a type.
+     *
+     * @return array The array of types
+     */
+    public function addType(array $types)
+    {
+        $this->types = array_merge($this->types, $types);
+
         return $this->config->getTypes();
     }
 }

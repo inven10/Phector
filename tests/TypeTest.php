@@ -8,8 +8,7 @@ use Faker\Factory;
 use Phector\Repo;
 use Phector\Schema;
 
-use Phector\Tests\CustomTypeTest\BarType;
-use Phector\Tests\CustomTypeTest\DB;
+use Phector\Tests\DB;
 use Phector\Tests\Populator;
 use Phector\Tests\Struct\CustomTypeEntity;
 

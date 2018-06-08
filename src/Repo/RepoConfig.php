@@ -6,6 +6,11 @@ namespace Phector\Repo;
 use Phector\Types\StringType;
 use Phector\Types\JsonType;
 use Phector\Types\DateType;
+use Phector\Types\BooleanType;
+use Phector\Types\IntegerType;
+use Phector\Types\FloatType;
+use Phector\Types\UuidType;
+use Phector\Exception\DatabaseConfigNotFound;
 use Phector\Exceptions\InvalidConfigException;
 
 /**
@@ -51,12 +56,20 @@ final class RepoConfig
      */
     public static function create(array $config)
     {
-        $dbConfig = $config['db'] ?? [];
+        if(!isset($config['db'])) {
+            throw new DatabaseConfigNotFound();
+        }
+
+        $dbConfig = $config['db'];
 
         $baseTypeConfig = [
             'string' => StringType::class,
             'date' => DateType::class,
             'json' => JsonType::class,
+            'integer' => IntegerType::class,
+            'float' => FloatType::class,
+            'boolean' => BooleanType::class,
+            'uuid' => UuidType::class,
         ];
         $customTypes = $config['types'] ?? [];
         $mergedTypes= array_merge($baseTypeConfig, $customTypes);

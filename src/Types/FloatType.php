@@ -5,14 +5,15 @@ namespace Phector\Types;
 
 use Phector\Types\TypeInterface;
 
-final class StringType implements TypeInterface
+final class FloatType implements TypeInterface
 {
     public static function load($field)
     {
-        return $field;
+        return (float) $field;
     }
+
     public static function dump($field)
     {
-        return $field;
+        return (float) $field;
     }
 }

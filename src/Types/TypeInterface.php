@@ -5,6 +5,6 @@ namespace Phector\Types;
 
 interface TypeInterface
 {
-    public static function set($field);
-    public static function get($field);
+    public static function load($field);
+    public static function dump($field);
 }

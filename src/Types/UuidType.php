@@ -5,7 +5,7 @@ namespace Phector\Types;
 
 use Phector\Types\TypeInterface;
 
-final class StringType implements TypeInterface
+final class UuidType implements TypeInterface
 {
     public static function load($field)
     {

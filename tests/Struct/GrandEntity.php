@@ -6,20 +6,21 @@ namespace Phector\Tests\Struct;
 use Phector\Entity;
 use Phector\MappedEntity;
 
-final class CustomTypeEntity extends \Spruct\Struct implements MappedEntity
+final class GrandEntity extends \Spruct\Struct implements MappedEntity
 {
     use Entity;
 
     protected $id;
-    protected $body;
+    protected $name;
+    protected $date;
 
     public static function getSchema() : array
     {
         return [
-            'table' => 'custom_type_entities',
+            'table' => 'child_entities',
             'fields' => [
                 'id' => [
-                    'type' => 'string',
+                    'type' => 'uuid',
                     'primary' => true,
                     'default' => function () {
                         $uuid = md5(uniqid());
@@ -30,12 +31,9 @@ final class CustomTypeEntity extends \Spruct\Struct implements MappedEntity
 
                         return $uuid;
                     }],
-                'fooBody' => [
-                    'type' => 'foo'
+                'name' => [
+                    'type' => 'string'
                 ],
-                'barBody' => [
-                    'type' => 'bar'
-                ]
             ]
         ];
     }

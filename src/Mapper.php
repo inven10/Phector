@@ -213,7 +213,7 @@ final class Mapper
             if (isset($record[$columnName])) {
                 $value = $record[$columnName];
 
-                $data[$fieldName] = $this->types[$type]::get($value);
+                $data[$fieldName] = $this->types[$type]::load($value);
             }
         }
 
@@ -272,7 +272,7 @@ final class Mapper
                             $defaultValue() :
                             $defaultValue);
 
-                $value = $this->types[$type]::set($baseValue);
+                $value = $this->types[$type]::dump($baseValue);
             }
 
             $data[$columnName] = $value;

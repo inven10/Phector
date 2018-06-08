@@ -7,11 +7,12 @@ use Phector\Types\TypeInterface;
 
 final class DateType implements TypeInterface
 {
-    public static function get($field)
+    public static function load($field)
     {
         return new \DateTime($field);
     }
-    public static function set($field)
+
+    public static function dump($field)
     {
         $stringForm = $field->format('Y-m-d H:i:s');
 
