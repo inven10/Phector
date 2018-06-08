@@ -84,7 +84,7 @@ final class Mapper
             return $this->{$name}(...$args);
         } elseif(in_array($name, $endMethods)) {
             $result = call_user_func_array([$this->applySelects($this->cloneQuery(), $this->preloads), $name], $args);
-        } elseif(in_array($name, $interceptMethods)) {
+        } elseif(in_array($name, $interceptMethods) && $this->preloads) {
             $result = call_user_func_array([$this->applySelects($this->cloneQuery(), $this->preloads), 'get'], $args);
         } else {
             $result = call_user_func_array([$this->cloneQuery(), $name], $args);

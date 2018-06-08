@@ -8,10 +8,10 @@ use Faker\Factory;
 use Phector\Repo;
 use Phector\Schema;
 
-use Phector\Tests\DB;
 use Phector\Tests\Populator;
 use Phector\Tests\Struct\ParentEntity;
 use Phector\Tests\Struct\ChildEntity;
+use Phector\Tests\CustomTypeTest\DB;
 
 final class JoinTest extends \PHPUnit\Framework\TestCase
 {

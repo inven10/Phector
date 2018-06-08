@@ -1,10 +1,8 @@
 <?php
 
-namespace Phector\Tests;
+namespace Phector\Tests\CustomTypeTest;
 
 use Phector\Repo;
-
-use Phector\Tests\CustomTypeTest\MeowType;
 
 final class DB
 {
@@ -19,14 +17,13 @@ final class DB
     ];
 
     public static $customTypes = [
-        'meowOnly' => MeowType::class
+
     ];
 
     public static function repo() : Repo
     {
         return Repo::create([
             'db' => self::$postgresConfig,
-            'types' => self::$customTypes
         ]);
     }
 }
