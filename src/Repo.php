@@ -90,7 +90,7 @@ final class Repo
      */
     public function mapper($entityClass, array $schema)
     {
-        return Mapper::create($this->makeConnection(), $entityClass, $schema);
+        return Mapper::create($this->makeConnection(), $entityClass, $schema, $this->getTypes());
     }
 
     /**
@@ -100,6 +100,16 @@ final class Repo
      */
     public function transactional()
     {
-        return TransactionalRepo::create($this->makeConnection());
+        return TransactionalRepo::create($this->makeConnection(), $this->getTypes());
+    }
+
+    /**
+     * Get the types from the repo config.
+     *
+     * @return array Array.
+     */
+    public function getTypes()
+    {
+        return $this->config->getTypes();
     }
 }

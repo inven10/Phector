@@ -14,10 +14,12 @@ use Phector\Mapper;
 final class TransactionalRepo
 {
     private $connection;
+    private $types;
 
-    private function __construct($connection)
+    private function __construct($connection, array $types)
     {
         $this->connection = $connection;
+        $this->types = $types;
     }
 
     /**
@@ -26,9 +28,9 @@ final class TransactionalRepo
      * @param  Connection $connection A connection from the main Repo.
      * @return self A valid repo with a singular connection
      */
-    public static function create($connection)
+    public static function create($connection, $types)
     {
-        return new self($connection);
+        return new self($connection, $types);
     }
 
     /**
@@ -54,7 +56,7 @@ final class TransactionalRepo
      */
     public function mapper($entityClass, array $schema)
     {
-        return Mapper::create($this->connection, $entityClass, $schema);
+        return Mapper::create($this->connection, $entityClass, $schema, $this->getTypes());
     }
 
 
@@ -92,5 +94,15 @@ final class TransactionalRepo
         $this->connection->rollback();
 
         return $this;
+    }
+
+    /**
+     * Get the types from the repo config.
+     *
+     * @return array Array.
+     */
+    public function getTypes()
+    {
+        return $this->types;
     }
 }

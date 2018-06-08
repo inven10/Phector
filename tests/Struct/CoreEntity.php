@@ -23,7 +23,7 @@ final class CoreEntity extends \Spruct\Struct implements MappedEntity
             'table' => 'core_entities',
             'fields' => [
                 'id' => [
-                    'type' => StringType::class,
+                    'type' => 'string',
                     'primary' => true,
                     'default' => function () {
                         $uuid = md5(uniqid());
@@ -35,10 +35,10 @@ final class CoreEntity extends \Spruct\Struct implements MappedEntity
                         return $uuid;
                     }],
                 'name' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ],
                 'code' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ]
             ]
         ];

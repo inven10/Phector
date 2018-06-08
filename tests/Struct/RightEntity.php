@@ -22,7 +22,7 @@ final class RightEntity extends \Spruct\Struct implements MappedEntity
             'table' => 'right_entities',
             'fields' => [
                 'id' => [
-                    'type' => StringType::class,
+                    'type' => 'string',
                     'primary' => true,
                     'default' => function () {
                         $uuid = md5(uniqid());
@@ -34,13 +34,13 @@ final class RightEntity extends \Spruct\Struct implements MappedEntity
                         return $uuid;
                     }],
                 'model' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ],
                 'make' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ],
                 'variant' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ]
             ]
         ];

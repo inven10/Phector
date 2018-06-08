@@ -21,7 +21,7 @@ final class LeftEntity extends \Spruct\Struct implements MappedEntity
             'table' => 'left_entities',
             'fields' => [
                 'id' => [
-                    'type' => StringType::class,
+                    'type' => 'string',
                     'primary' => true,
                     'default' => function () {
                         $uuid = md5(uniqid());
@@ -33,10 +33,10 @@ final class LeftEntity extends \Spruct\Struct implements MappedEntity
                         return $uuid;
                     }],
                 'title' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ],
                 'author' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ]
             ]
         ];

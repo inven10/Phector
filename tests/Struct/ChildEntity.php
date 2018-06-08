@@ -6,9 +6,6 @@ namespace Phector\Tests\Struct;
 use Phector\Entity;
 use Phector\MappedEntity;
 use Phector\Association\AssociationTypes;
-use Phector\Types\StringType;
-use Phector\Types\DateType;
-use Phector\Types\JsonType;
 use Phector\Tests\Struct\ParentEntity;
 
 final class ChildEntity extends \Spruct\Struct implements MappedEntity
@@ -27,7 +24,7 @@ final class ChildEntity extends \Spruct\Struct implements MappedEntity
             'table' => 'child_entities',
             'fields' => [
                 'id' => [
-                    'type' => StringType::class,
+                    'type' => 'string',
                     'primary' => true,
                     'default' => function () {
                         $uuid = md5(uniqid());
@@ -39,14 +36,14 @@ final class ChildEntity extends \Spruct\Struct implements MappedEntity
                         return $uuid;
                     }],
                 'name' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ],
                 'code' => [
-                    'type' => StringType::class
+                    'type' => 'string'
                 ],
                 'parentId' => [
                 'columnName' => 'parent_id',
-                'type' => StringType::class
+                'type' => 'string'
                 ]
             ],
             'associations' => [

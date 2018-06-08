@@ -22,12 +22,14 @@ final class Mapper
     private $entityClass;
     private $query;
     private $schema;
+    private $types;
     private $preloads= [];
 
-    private function __construct($entityClass, $query, $schema, $preloads= [])
+    private function __construct($entityClass, $query, $schema, $types, $preloads= [])
     {
         $this->entityClass = $entityClass;
         $this->query = $query;
+        $this->types= $types;
         $this->schema = $schema;
         $this->preloads= $preloads;
     }
@@ -61,12 +63,12 @@ final class Mapper
      * @throw  InvalidSchemaException If the schema is invalid.
      * @return Mapper A valid mapper.
      */
-    public static function create($connection, string $entityClass, array $schema)
+    public static function create($connection, string $entityClass, array $schema, array $types)
     {
         $validSchema = Schema::create($schema);
         $query = $connection->table($validSchema->getTable());
 
-        return new self($entityClass, $query, $validSchema);
+        return new self($entityClass, $query, $validSchema, $types);
     }
 
     function __call(string $name, array $args)
@@ -93,6 +95,7 @@ final class Mapper
                 $this->entityClass,
                 $result,
                 $this->schema,
+                $this->types,
                 $this->preloads
             );
         } elseif (is_array($result)) {
@@ -210,7 +213,7 @@ final class Mapper
             if (isset($record[$columnName])) {
                 $value = $record[$columnName];
 
-                $data[$fieldName] = $type::get($value);
+                $data[$fieldName] = $this->types[$type]::get($value);
             }
         }
 
@@ -269,7 +272,7 @@ final class Mapper
                             $defaultValue() :
                             $defaultValue);
 
-                $value = $type::set($baseValue);
+                $value = $this->types[$type]::set($baseValue);
             }
 
             $data[$columnName] = $value;
@@ -606,6 +609,7 @@ final class Mapper
             $this->entityClass,
             $this->query,
             $this->schema,
+            $this->types,
             $preloads
         );
     }

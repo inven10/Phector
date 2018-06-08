@@ -18,6 +18,8 @@ final class DB
 
     public static function repo() : Repo
     {
-        return Repo::create(self::$postgresConfig);
+        return Repo::create([
+            'db' => self::$postgresConfig,
+        ]);
     }
 }
