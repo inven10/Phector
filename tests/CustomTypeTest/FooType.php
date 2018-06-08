@@ -5,14 +5,14 @@ namespace Phector\Tests\CustomTypeTest;
 
 use Phector\Types\TypeInterface;
 
-final class MeowType implements TypeInterface
+final class FooType implements TypeInterface
 {
     public static function get($field)
     {
-        return "MEOW";
+        return "Foo";
     }
     public static function set($field)
     {
-        return "MEOW";
+        return "Foo";
     }
 }

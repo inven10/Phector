@@ -8,7 +8,7 @@ use Faker\Factory;
 use Phector\Repo;
 use Phector\Schema;
 
-use Phector\Tests\DB;
+use Phector\Tests\CustomTypeTest\DB;
 use Phector\Tests\Populator;
 use Phector\Tests\Struct\CustomTypeEntity;
 
@@ -57,6 +57,6 @@ final class CustomTypeTest extends \PHPUnit\Framework\TestCase
 
         $entity = $mapper->first();
 
-        $this->assertEquals('MEOW', $entity->body);
+        $this->assertEquals('Foo', $entity->body);
     }
 }

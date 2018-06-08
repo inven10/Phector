@@ -31,7 +31,7 @@ final class CustomTypeEntity extends \Spruct\Struct implements MappedEntity
                         return $uuid;
                     }],
                 'body' => [
-                    'type' => 'meowOnly'
+                    'type' => 'foo'
                 ]
             ]
         ];

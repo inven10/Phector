@@ -4,6 +4,8 @@ namespace Phector\Tests\CustomTypeTest;
 
 use Phector\Repo;
 
+use Phector\Tests\CustomTypeTest\FooType;
+
 final class DB
 {
     public static $postgresConfig = [
@@ -17,13 +19,14 @@ final class DB
     ];
 
     public static $customTypes = [
-
+        'foo' => FooType::class
     ];
 
     public static function repo() : Repo
     {
         return Repo::create([
             'db' => self::$postgresConfig,
+            'types' => self::$customTypes
         ]);
     }
 }

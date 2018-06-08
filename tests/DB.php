@@ -4,8 +4,6 @@ namespace Phector\Tests;
 
 use Phector\Repo;
 
-use Phector\Tests\CustomTypeTest\MeowType;
-
 final class DB
 {
     public static $postgresConfig = [
@@ -18,15 +16,10 @@ final class DB
         'charset' => 'utf8'
     ];
 
-    public static $customTypes = [
-        'meowOnly' => MeowType::class
-    ];
-
     public static function repo() : Repo
     {
         return Repo::create([
-            'db' => self::$postgresConfig,
-            'types' => self::$customTypes
+            'db' => self::$postgresConfig
         ]);
     }
 }
