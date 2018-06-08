@@ -18,7 +18,7 @@ Inspired by Elixir Ecto
 - [ ] Join
   - [x] Simple
   - [ ] Nested
-- [ ] Better Types
+- [x] Better Types
 - [x] Transaction
 - [ ] Complex Query Tests
 - [ ] Faker Integration
