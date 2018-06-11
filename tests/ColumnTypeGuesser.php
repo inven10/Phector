@@ -56,6 +56,13 @@ final class ColumnTypeGuesser
                 return function () use ($generator, $size) {
                     return $generator->text($size);
                 };
+            case 'json'::class:
+                $size = 25;
+
+                return function () use ($generator, $size) {
+                    $json = ['foo' => 'bar', 'bar' => ['foobar']];
+                    return $json;
+                };
             case 'text':
                 return function () use ($generator) {
                     return $generator->text;

@@ -13,11 +13,15 @@ final class GrandEntity extends \Spruct\Struct implements MappedEntity
     protected $id;
     protected $name;
     protected $date;
+    protected $json;
+    protected $boolean;
+    protected $integer;
+    protected $float;
 
     public static function getSchema() : array
     {
         return [
-            'table' => 'child_entities',
+            'table' => 'grand_entities',
             'fields' => [
                 'id' => [
                     'type' => 'uuid',
@@ -33,6 +37,21 @@ final class GrandEntity extends \Spruct\Struct implements MappedEntity
                     }],
                 'name' => [
                     'type' => 'string'
+                ],
+                'date' => [
+                    'type' => 'date'
+                ],
+                'json' => [
+                    'type' => 'json'
+                ],
+                'boolean' => [
+                    'type' => 'boolean'
+                ],
+                'integer' => [
+                    'type' => 'integer'
+                ],
+                'float' => [
+                    'type' => 'float'
                 ],
             ]
         ];

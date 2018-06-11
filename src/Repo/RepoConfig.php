@@ -48,6 +48,18 @@ final class RepoConfig
     }
 
     /**
+     * Add custom types to the curernt types;
+     *
+     * @return Array Merged Types
+     */
+    public function addTypes(array $types = []) : array
+    {
+        $this->types = array_merge($this->types, $types);
+
+        return $this->types;
+    }
+
+    /**
      * Validates and creates a config instance
      *
      * @param  array $config Generic database configuration

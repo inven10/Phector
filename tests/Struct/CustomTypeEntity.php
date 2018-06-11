@@ -12,6 +12,8 @@ final class CustomTypeEntity extends \Spruct\Struct implements MappedEntity
 
     protected $id;
     protected $body;
+    protected $fooBody;
+    protected $barBody;
 
     public static function getSchema() : array
     {

@@ -7,11 +7,12 @@ use Phector\Types\TypeInterface;
 
 final class JsonType implements TypeInterface
 {
-    public static function get($field)
+    public static function load($field)
     {
         return json_decode($field, true);
     }
-    public static function set($field)
+
+    public static function dump($field)
     {
         return json_encode($field);
     }

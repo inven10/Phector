@@ -115,14 +115,14 @@ final class Repo
     }
 
     /**
-     * Adds a type.
+     * Adds types.
      *
-     * @return array The array of types
+     * @return self With the added types
      */
-    public function addType(array $types)
+    public function addTypes(array $types)
     {
-        $this->types = array_merge($this->types, $types);
+        $this->config->addTypes($types);
 
-        return $this->config->getTypes();
+        return $this;
     }
 }

@@ -9,7 +9,8 @@ use Phector\Repo;
 use Phector\Schema;
 
 use Phector\Tests\CustomTypeTest\BarType;
-use Phector\Tests\CustomTypeTest\DB;
+use Phector\Tests\CustomTypeTest\FooType;
+use Phector\Tests\DB;
 use Phector\Tests\Populator;
 use Phector\Tests\Struct\CustomTypeEntity;
 
@@ -19,10 +20,9 @@ final class CustomTypeTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$repo = DB::repo();
-
-        self::$repo::addTypes([
+        self::$repo = DB::repo()->addTypes([
             'bar' => BarType::class,
+            'foo' => FooType::class,
         ]);
 
         $tableName = Schema::create(CustomTypeEntity::getSchema())->getTable();
@@ -36,8 +36,8 @@ final class CustomTypeTest extends \PHPUnit\Framework\TestCase
             'custom_type_entities',
             function ($table) {
                 $table->uuid('id')->primary();
-                $table->string('foo_body');
-                $table->string('bar_body');
+                $table->string('foo_body')->nullable();
+                $table->string('bar_body')->nullable();
             }
         );
 

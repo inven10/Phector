@@ -7,11 +7,11 @@ use Phector\Types\TypeInterface;
 
 final class FooType implements TypeInterface
 {
-    public static function get($field)
+    public static function load($field)
     {
         return "Foo";
     }
-    public static function set($field)
+    public static function dump($field)
     {
         return "Foo";
     }

@@ -10,9 +10,9 @@ use Phector\Schema;
 
 use Phector\Tests\DB;
 use Phector\Tests\Populator;
-use Phector\Tests\Struct\CustomTypeEntity;
+use Phector\Tests\Struct\GrandEntity;
 
-final class CustomTypeTest extends \PHPUnit\Framework\TestCase
+final class TypeTest extends \PHPUnit\Framework\TestCase
 {
     private static $repo;
 
@@ -20,11 +20,7 @@ final class CustomTypeTest extends \PHPUnit\Framework\TestCase
     {
         self::$repo = DB::repo();
 
-        self::$repo::addTypes([
-            'bar' => BarType::class,
-        ]);
-
-        $tableName = Schema::create(CustomTypeEntity::getSchema())->getTable();
+        $tableName = Schema::create(GrandEntity::getSchema())->getTable();
         $builder = self::$repo->schemaBuilder();
 
         if ($builder->hasTable($tableName)) {
@@ -32,11 +28,15 @@ final class CustomTypeTest extends \PHPUnit\Framework\TestCase
         }
 
         $builder->create(
-            'custom_type_entities',
+            'grand_entities',
             function ($table) {
                 $table->uuid('id')->primary();
-                $table->string('foo_body');
-                $table->string('bar_body');
+                $table->string('name');
+                $table->date('date');
+                $table->json('json');
+                $table->boolean('boolean');
+                $table->integer('integer');
+                $table->float('float');
             }
         );
 
@@ -45,24 +45,23 @@ final class CustomTypeTest extends \PHPUnit\Framework\TestCase
             self::$repo
         );
 
-        $populator->addEntity(CustomTypeEntity::class, 2);
+        $populator->addEntity(GrandEntity::class, 2);
         $populator->execute();
     }
 
     /**
-     * Proof that custom type works
+     * Proof that all base types work
      *
      * @group core
      * @group positive
      * @test
      */
-    public function customTypeWorks()
+    public function baseTypesShouldWork()
     {
-        $mapper = self::$repo->entityMapper(CustomTypeEntity::class);
+        $mapper = self::$repo->entityMapper(GrandEntity::class);
 
         $entity = $mapper->first();
 
-        $this->assertEquals('Foo', $entity->fooBody);
-        $this->assertEquals('Bar', $entity->barBody);
+        $this->assertNotNull($entity);
     }
 }
