@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Phector\Tests;
 
 use Faker\Factory;
+use Ramsey\Uuid\Uuid;
 
 use Phector\Repo;
 use Phector\Schema;
@@ -63,8 +64,12 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
         $entity = $mapper->first();
 
         $this->assertNotNull($entity);
-        $this->assertTrue(preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',$entity->id));
+        $this->assertTrue(Uuid::isValid($entity->id));
+        $this->assertInternalType('string', $entity->name);
         $this->assertInstanceOf(\DateTime::class, $entity->date);
+        $this->assertInternalType('array', $entity->json);
+        $this->assertInternalType('bool', $entity->boolean);
         $this->assertInternalType('int', $entity->integer);
+        $this->assertInternalType('float', $entity->float);
     }
 }

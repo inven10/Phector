@@ -8,7 +8,7 @@ final class DB
 {
     public static $postgresConfig = [
         'driver' => 'pgsql',
-        'username' => 'macdonalds',
+        'username' => 'postgres',
         'password' => '',
         'database' => 'phector_test',
         'host' => 'localhost',
