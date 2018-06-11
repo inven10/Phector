@@ -63,5 +63,8 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
         $entity = $mapper->first();
 
         $this->assertNotNull($entity);
+        $this->assertTrue(preg_match('/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',$entity->id));
+        $this->assertInstanceOf(\DateTime::class, $entity->date);
+        $this->assertInternalType('int', $entity->integer);
     }
 }
